@@ -31,12 +31,12 @@ const initialState = {
 
 //reducer
 const cakeReducer = (state = initialState, action) => {
-  switch(action.type){
-    case SELL_CAKE: return{
+  switch (action.type) {
+    case SELL_CAKE: return {
       ...state, //create copy of state
       numberOfCakes: state.numberOfCakes - 1
     }
-    case PRODUCE_CAKE: return{
+    case PRODUCE_CAKE: return {
       ...state,
       numberOfCakes: state.numberOfCakes + 1
     }
@@ -45,13 +45,13 @@ const cakeReducer = (state = initialState, action) => {
 }
 
 //store
-const store = createStore(cakeReducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(cakeReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 //getState - current state in store
 console.log("Initial state", store.getState());
 
 //subscribe - subscribe to changes made to store
-const unsubscribe = store.subscribe(()=> {
+const unsubscribe = store.subscribe(() => {
   console.log("Updated State", store.getState());
 })
 
@@ -66,6 +66,12 @@ unsubscribe();
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* <button onClick={store.dispatch(sellCake())}>
+      Sell Cake
+    </button>
+    <button onClick={store.dispatch(produceCake())}>
+      Make Cake
+    </button> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
