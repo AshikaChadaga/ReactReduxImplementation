@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
 
 const SELL_CAKE = 'SELL_CAKE';
 const PRODUCE_CAKE = 'PRODUCE_CAKE';
+const SELL_MUFFINS = 'SELL_MUFFINS';
+const PRODUCE_MUFFINS = 'PRODUCE_MUFFINS';
 
 //action
 const sellCake = () => {
@@ -24,13 +26,30 @@ const produceCake = () => {
   }
 }
 
+const sellMuffins = () => {
+  return {
+    type: SELL_MUFFINS,
+    info: 'Sell Muffins Redux Action'
+  }
+}
+
+const produceMuffins = () => {
+  return {
+    type: PRODUCE_MUFFINS,
+    info: 'Produce Muffins Redux Action'
+  }
+}
+
 //state
-const initialState = {
+const initialCakeState = {
   numberOfCakes: 10
+}
+const initialMuffinsState = {
+  numberOfMuffins: 20
 }
 
 //reducer
-const cakeReducer = (state = initialState, action) => {
+const cakeReducer = (state = initialCakeState, action) => {
   switch (action.type) {
     case SELL_CAKE: return {
       ...state, //create copy of state
@@ -43,9 +62,28 @@ const cakeReducer = (state = initialState, action) => {
     default: return state
   }
 }
+const muffinsReducer = (state = initialMuffinsState, action) => {
+  switch (action.type) {
+    case SELL_MUFFINS: return {
+      ...state,
+      numberOfMuffins: state.numberOfMuffins - 1
+    }
+    case PRODUCE_MUFFINS: return {
+      ...state,
+      numberOfMuffins: state.numberOfMuffins + 1
+    }
+    default: return state
+  }
+}
+
+//combine reducers
+const allReducers = combineReducers({
+  cake: cakeReducer,
+  muffins: muffinsReducer
+})
 
 //store
-const store = createStore(cakeReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 //getState - current state in store
 console.log("Initial state", store.getState());
@@ -61,6 +99,12 @@ store.dispatch(sellCake());
 store.dispatch(sellCake());
 store.dispatch(sellCake());
 store.dispatch(produceCake());
+
+store.dispatch(sellMuffins());
+store.dispatch(sellMuffins());
+store.dispatch(sellMuffins());
+store.dispatch(sellMuffins());
+store.dispatch(produceMuffins());
 unsubscribe();
 
 ReactDOM.render(
